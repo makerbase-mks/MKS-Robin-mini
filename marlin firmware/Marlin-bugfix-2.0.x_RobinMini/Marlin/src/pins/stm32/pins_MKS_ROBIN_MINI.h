@@ -22,16 +22,16 @@
 #pragma once
 
 /**
- * MKS Robin nano (STM32F130VET6) board pin assignments
+ * MKS Robin MINI (STM32F130VET6) board pin assignments
  */
 
 #ifndef __STM32F1__
   #error "Oops! Select an STM32F1 board in 'Tools > Board.'"
-#elif HOTENDS > 2 || E_STEPPERS > 2
-  #error "MKS Robin nano supports up to 2 hotends / E-steppers. Comment out this line to continue."
+#elif HOTENDS > 1 || E_STEPPERS > 1
+  #error "MKS Robin mini supports up to 1 hotends / E-steppers. Comment out this line to continue."
 #endif
 
-#define BOARD_INFO_NAME "MKS Robin nano"
+#define BOARD_INFO_NAME "MKS Robin mini"
 
 //
 // Release PB4 (Y_ENABLE_PIN) from JTAG NRST role
@@ -39,20 +39,22 @@
 #define DISABLE_DEBUG
 
 //
-// Note: MKS Robin board is using SPI2 interface.
+// Note: MKS Robin mini board is using SPI2 interface.
 //
 #define SPI_MODULE 2
 
 //
 // Limit Switches
 //
-#define X_STOP_PIN        PA15
-#define Y_STOP_PIN        PA12
-#define Z_MIN_PIN         PA11
-#define Z_MAX_PIN         PC4
+#define X_MIN_PIN          PA15
+#define X_MAX_PIN          PA15
+#define Y_MIN_PIN          PA12
+#define Y_MAX_PIN          PA12
+#define Z_MIN_PIN          PA11
+#define Z_MAX_PIN          PC4
 
 #ifndef FIL_RUNOUT_PIN
-  #define FIL_RUNOUT_PIN   PA4   // MT_DET
+  #define FIL_RUNOUT_PIN   PF11  // MT_DET
 #endif
 
 //
@@ -74,22 +76,16 @@
 #define E0_STEP_PIN        PD6
 #define E0_DIR_PIN         PD3
 
-#define E1_ENABLE_PIN      PA3
-#define E1_STEP_PIN        PA6
-#define E1_DIR_PIN         PA1
-
 //
 // Temperature Sensors
 //
 #define TEMP_0_PIN         PC1   // TH1
-#define TEMP_1_PIN         PC2   // TH2
 #define TEMP_BED_PIN       PC0   // TB1
 
 //
 // Heaters / Fans
 //
 #define HEATER_0_PIN       PC3   // HEATER1
-#define HEATER_1_PIN       PB0   // HEATER2
 #define HEATER_BED_PIN     PA0   // HOT BED
 
 #define FAN_PIN            PB1   // FAN
@@ -106,7 +102,7 @@
 #define POWER_LOSS_PIN     PA2   // PW_DET
 #define PS_ON_PIN          PA3   // PW_OFF
 
-#define LED_PIN            PB2
+//#define LED_PIN            PB2
 
 //
 // LCD / Controller
@@ -120,15 +116,35 @@
  * to let the bootloader init the screen.
  */
 #if ENABLED(FSMC_GRAPHICAL_TFT)
-  #define FSMC_CS_PIN        PD7    // NE4
-  #define FSMC_RS_PIN        PD11   // A0
+  #define FSMC_CS_PIN      PD7    // NE4
+  #define FSMC_RS_PIN      PD11   // A0
 
-  #define LCD_RESET_PIN      PC6
-  #define NO_LCD_REINIT             // Suppress LCD re-initialization
+  #define LCD_RESET_PIN    PC6
+  #define NO_LCD_REINIT           // Suppress LCD re-initialization
 
-  #define LCD_BACKLIGHT_PIN  PD13
+  #define LCD_BACKLIGHT_PIN PD13
 
   #if ENABLED(TOUCH_BUTTONS)
-    #define TOUCH_CS_PIN     PA7
+    #define TOUCH_CS_PIN   PC2
+    #define TOUCH_SCK_PIN    PB13
+    #define TOUCH_MOSI_PIN   PB15
+    #define TOUCH_MISO_PIN   PB14
   #endif
 #endif
+
+// Motor current PWM pins
+#define MOTOR_CURRENT_PWM_XY_PIN   PA6
+#define MOTOR_CURRENT_PWM_Z_PIN    PA7
+#define MOTOR_CURRENT_PWM_E_PIN    PB0
+#define MOTOR_CURRENT_PWM_RANGE    1500 // (255 * (1000mA / 65535)) * 257 = 1000 is equal 1.6v Vref in turn equal 1Amp
+#define DEFAULT_PWM_MOTOR_CURRENT  { 1030, 1030, 1030 } // 1.05Amp per driver, here is XY, Z and E. This values determined empirically.
+
+// This is a kind of workaround in case native marlin "digipot" interface won't work.
+// Required to enable related code in STM32F1/HAL.cpp
+//#ifndef MKS_ROBIN_MINI_VREF_PWM
+//  #define MKS_ROBIN_MINI_VREF_PWM
+//#endif
+
+//#define VREF_XY_PIN        PA6
+//#define VREF_Z_PIN         PA7
+//#define VREF_E1_PIN        PB0

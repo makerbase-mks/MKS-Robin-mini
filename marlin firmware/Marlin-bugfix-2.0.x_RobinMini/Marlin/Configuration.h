@@ -120,6 +120,7 @@
 //MKS SGEN_L AUX-1 Use UART0(P0.2-TXD0,P0.3-RXD0)     #define SERIAL_PORT_2 0
 //MKS Robin Nano USB Use UART3(PB10-TX,PB11-RX)     #define SERIAL_PORT_2 3
 //MKS Robin Mini USB Use UART3(PB10-TX,PB11-RX)     #define SERIAL_PORT_2 3
+//MKS Robin USB Use UART3(PB10-TX,PB11-RX)     #define SERIAL_PORT_2 3
 #define SERIAL_PORT_2 3
 
 /**
@@ -1940,7 +1941,7 @@
 //#define MKS_MINI_12864
 #if ENABLED(MKS_MINI_12864)
 // if use MKS Robin Lite3 Board, you need enable MKS_LCD12864B and disable SHOW_BOOTSCREEN
-#define MKS_LCD12864B
+//#define MKS_LCD12864B
 #endif
 
 //
